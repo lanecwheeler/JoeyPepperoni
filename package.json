@@ -1,0 +1,41 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "A bot that tweets Italian names at you",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanecwheeler/JoeyPepperoni.git"
+  },
+  "keywords": [
+    "twitter",
+    "bot",
+    "nodejs",
+    "italian",
+    "names",
+    "pepperoni",
+    "joey",
+    "webhook",
+    "account",
+    "activity",
+    "twitter-webhook"
+  ],
+  "author": "Lane Wheeler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lanecwheeler/JoeyPepperoni/"
+  },
+  "homepage": "https://github.com/lanecwheeler/JoeyPepperoni#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4",
+    "mocha": "^5.2.0",
+    "nodemailer": "^5.1.1",
+    "twitter": "^1.7.1",
+    "body-parser": "^1.16.1"
+  }
+}

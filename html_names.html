@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fuhgeddaboudit!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" />
+</head>
+<body>
+    <!-- Hey, you found this garbage! This was a REAL temporary test page to see if my routing was correct. -->
+    <!--               I think Imma gonna keep it for fun :) Might make it look nice soon                   -->
+    <input type="button" role="button" id="getName" value="Get Name" />
+    <div id="nameGoesHere"></div>
+    <input type="button" role="button" id="sendTweet" value="Send Name" />
+    <div id="resultGoesHere"></div>
+    <footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $('#getName').click(function(){
+                $.ajax({
+                    type: 'GET',
+                    url: "/getName",
+                    success:function(data){
+                        console.log(data)
+                        $('#nameGoesHere').html(data)
+                    }
+                })
+            })
+            $('#getName').click(function(){
+                $.ajax({
+                    type: 'GET',
+                    url: "/sendName",
+                    success:function(data){
+                        console.log(data)
+                        $('#resultGoesHere').html(data)
+                    }
+                })
+            })
+        </script>
+    </footer>
+</body>
+</html>
