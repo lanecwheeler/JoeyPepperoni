@@ -1,0 +1,4 @@
+cron:
+- description: "auto tweet"
+  url: /sendName
+  schedule: every day 18:00

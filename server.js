@@ -48,13 +48,19 @@ app.get('/getName', (request, response) =>{
     })
 })
 app.get('/sendName', (request, response) =>{
+    if (request.get('X-Appengine-Cron') !== 'true') {
+        return response.status(401).end();
+    }
     getYonName().then((value) =>{
-        value = '@REDACTED Ay! It\'s ' + value + '!'
+        value = 'Ay! It\'s ' + value + '!'
         let params = {status: value}
         t.post('statuses/update', params, function(err, res){
             if(err) console.log(err)
             else console.log(res)
         })
+        response.status(200)
+    }, (error) => {
+        response.status(500)
     })
 })
 //this is for registering your webhook (it passes off the crc token to validate your webhook)
