@@ -81,3 +81,8 @@ typings/
 
 # API keys
 config.js
+
+# Gmail creds
+credentials.json
+sendMail.js
+token.json

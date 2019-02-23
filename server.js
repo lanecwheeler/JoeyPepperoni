@@ -26,6 +26,13 @@ app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/static', express.static('public'))
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 const path = require('path')
 const Twitter = require('twitter')
 
@@ -34,6 +41,8 @@ const getYonName = require('./create_name/make_name')
 const security = require('./security')
 const config = require('./config')
 const message_processor = require('./message_processor')
+const sendMail = require('./sendMail')
+const specialChars = require('./specialChars')
 
 //create twitter obj
 const t = Twitter(config)
@@ -55,13 +64,14 @@ app.get('/sendName', (request, response) =>{
         value = 'Ay! It\'s ' + value + '!'
         let params = {status: value}
         t.post('statuses/update', params, function(err, res){
-            if(err) console.log(err)
-            else console.log(res)
+            if(err) response.status(500)
+            else response.status
         })
         response.status(200)
     }, (error) => {
         response.status(500)
     })
+    response.send
 })
 //this is for registering your webhook (it passes off the crc token to validate your webhook)
 app.get('/webhook/twitter', (request, response) =>{
@@ -77,6 +87,36 @@ app.get('/webhook/twitter', (request, response) =>{
         response.status(400)
         response.send('Error: crc_token is missing from request')
     }
+})
+
+app.post('/webhook/contact', (request, response) =>{
+    // should think about securing this webhook with a crc_token
+
+    // let crc_token = request.query.crc_token
+    // if(crc_token){
+    //     let hash = security(crc_token, config.consumer_secret)
+    //     response.status(200)
+    //     response.send({
+    //         response_token: 'sha256=' + hash
+    //     })
+    // }else{
+    //     response.status(400)
+    //     response.send('Error: crc_token is missing from request')
+    // }
+    if(request.host === 'lanewheeler.com' || request.host === 'twitter-joey-pepperoni.appspot.com'){
+        let data = {
+            name: specialChars(request.body.name),
+            email: specialChars(request.body.email),
+            message: specialChars(request.body.message),
+            animal: specialChars(request.body.animal)
+        }
+        sendMail(data.name, data.email, data.message, data.animal)
+        response.send('200 OK')
+    } else {
+        response.status(403)
+        response.send('403 Forbidden')
+    }
+
 })
 //this is for receiving your account activity via the api NOTE: IT'S POST, NOT GET
 //the body parser was required to look at payload content (accessed via req.body)
